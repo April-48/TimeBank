@@ -1,298 +1,482 @@
-# 🚀 TimeBank Frontend - 快速开始
+# 🚀 TimeBank - Quick Start Guide
 
-## 5 分钟上手指南
+A comprehensive guide to get you up and running with the TimeBank platform quickly.
 
-### 1. 启动开发服务器
+---
+
+## 📋 Table of Contents
+
+1. [Prerequisites](#prerequisites)
+2. [Installation](#installation)
+3. [Project Structure](#project-structure)
+4. [Development Workflow](#development-workflow)
+5. [Key Concepts](#key-concepts)
+6. [API Usage](#api-usage)
+7. [Common Tasks](#common-tasks)
+8. [Troubleshooting](#troubleshooting)
+
+---
+
+## ✅ Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** >= 16.0.0
+- **npm** >= 7.0.0 or **yarn** >= 1.22.0
+- **Git**
+- A modern code editor (VS Code recommended)
+
+### Recommended VS Code Extensions
+- ESLint
+- Prettier
+- Tailwind CSS IntelliSense
+- ES7+ React/Redux/React-Native snippets
+
+---
+
+## 📦 Installation
+
+### Step 1: Clone the Repository
 
 ```bash
+git clone https://github.com/yourusername/TimeBank.git
 cd TimeBank
-npm install  # 如果还没安装
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+This will install:
+- React 18
+- React Router DOM
+- Tailwind CSS + DaisyUI
+- TanStack Query
+- React Hook Form + Zod
+- MSW (Mock Service Worker)
+- Lucide React icons
+- And more...
+
+### Step 3: Start Development Server
+
+```bash
 npm run dev
 ```
 
-访问：http://localhost:3001
+The application will start at `http://localhost:3001`
 
-### 2. 测试 Mock API
+### Step 4: Verify Installation
 
-打开浏览器控制台，尝试登录：
+Open your browser and navigate to `http://localhost:3001`. You should see the TimeBank dashboard.
 
-```javascript
-// 方式 1: 直接使用 API（推荐）
-import api from '/src/lib/api/index.js'
+---
 
-const result = await api.auth.login({
-  email: 'zhang@student.edu.cn',
-  password: '123456'
-})
-console.log('Login result:', result)
+## 📁 Project Structure
 
-// 方式 2: 使用 fetch
-const response = await fetch('/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ 
-    email: 'zhang@student.edu.cn', 
-    password: '123456' 
-  })
-})
-const data = await response.json()
-console.log(data)
+```
+TimeBank/
+├── src/
+│   ├── pages/              # Page components
+│   │   ├── Dashboard.jsx
+│   │   ├── auth/           # Authentication pages
+│   │   ├── tasks/          # Task-related pages
+│   │   ├── contracts/      # Contract pages
+│   │   ├── messages/       # Messaging
+│   │   └── ...
+│   │
+│   ├── components/         # Reusable components
+│   │   ├── Layout.jsx      # Main layout
+│   │   ├── ui/             # UI components
+│   │   ├── pricing/        # Pricing components
+│   │   └── ...
+│   │
+│   ├── lib/                # Utilities & configuration
+│   │   ├── api/            # API client
+│   │   ├── pricing/        # Pricing utilities
+│   │   ├── constants.js    # Constants & enums
+│   │   ├── utils.js        # Utility functions
+│   │   ├── schemas.js      # Validation schemas
+│   │   └── ...
+│   │
+│   ├── mocks/              # Mock data (MSW)
+│   │   ├── handlers.js     # API handlers
+│   │   └── data.js         # Mock data
+│   │
+│   ├── App.jsx             # Root component
+│   ├── main.jsx            # Entry point
+│   └── index.css           # Global styles
+│
+├── public/                 # Static assets
+├── package.json
+├── vite.config.js          # Vite configuration
+└── tailwind.config.js      # Tailwind configuration
 ```
 
-### 3. 查看 React Query Devtools
+---
 
-点击屏幕左下角的 React Query logo 图标，可以看到：
-- ✅ 所有查询的状态
-- ✅ 缓存的数据
-- ✅ 查询的执行时间
-- ✅ 失效和重新获取的历史
+## 🔄 Development Workflow
+
+### Running the Development Server
+
+```bash
+npm run dev
+```
+
+- Hot Module Replacement (HMR) enabled
+- Runs on port 3001 by default
+- Mock API enabled via MSW
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+Output will be in the `dist/` folder.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Linting
+
+```bash
+npm run lint
+```
 
 ---
 
-## 📚 项目文档导航
+## 🎯 Key Concepts
 
-### 🎯 必读文档（按顺序）：
+### 1. Routing
 
-1. **README.md** - 项目概览和功能说明
-2. **FRONTEND_INFRASTRUCTURE.md** - 基础设施详解
-3. **USAGE_EXAMPLES.md** - 代码示例（⭐️ 最重要）
-4. **PROJECT_STATUS.md** - 当前进度和 TODO
-
-### 📖 快速查找：
-
-需要... | 查看文档 | 文件位置
---- | --- | ---
-调用 API | USAGE_EXAMPLES.md § API 调用 | `src/lib/api/`
-使用 Query | USAGE_EXAMPLES.md § TanStack Query | 任意页面
-表单验证 | USAGE_EXAMPLES.md § 表单验证 | `src/lib/schemas.js`
-状态常量 | FRONTEND_INFRASTRUCTURE.md | `src/lib/constants.js`
-工具函数 | FRONTEND_INFRASTRUCTURE.md | `src/lib/utils.js`
-UI 组件 | USAGE_EXAMPLES.md § UI 组件 | `src/components/ui/`
-Mock 数据 | N/A | `src/mocks/data.js`
-
----
-
-## 🔍 常见任务
-
-### 添加新页面
+The app uses React Router DOM v6 for routing:
 
 ```javascript
-// 1. 创建页面文件
-// src/pages/myfeature/MyPage.jsx
-
-import { useQuery } from '@tanstack/react-query'
-import api from '@/lib/api'
-import { QueryKeys } from '@/lib/constants'
-import { LoadingSpinner, ErrorAlert } from '@/components/ui'
-
-function MyPage() {
-  const { data, isLoading, error } = useQuery({
-    queryKey: QueryKeys.myFeature(),
-    queryFn: () => api.myFeature.list()
-  })
-
-  if (isLoading) return <LoadingSpinner />
-  if (error) return <ErrorAlert message={getErrorMessage(error)} />
-
-  return <div>{/* your content */}</div>
-}
-
-export default MyPage
-
-// 2. 添加到路由
 // src/App.jsx
-import MyPage from './pages/myfeature/MyPage'
-
-<Route path="/my-feature" element={<Layout><MyPage /></Layout>} />
-
-// 3. 添加导航链接
-// src/components/Layout.jsx
-{ name: 'My Feature', href: '/my-feature', icon: Star }
+<Routes>
+  <Route path="/" element={<Layout><Dashboard /></Layout>} />
+  <Route path="/tasks" element={<Layout><TaskList /></Layout>} />
+  <Route path="/tasks/:id" element={<Layout><TaskDetail /></Layout>} />
+  // ...
+</Routes>
 ```
 
-### 添加新 API 端点
+### 2. Data Fetching with TanStack Query
 
 ```javascript
-// 1. 在 src/lib/api/index.js 中添加
-export const myFeatureApi = {
-  list: (filters) => get('/my-feature', filters),
-  get: (id) => get(`/my-feature/${id}`),
-  create: (data) => post('/my-feature', data),
-  update: (id, data) => put(`/my-feature/${id}`, data),
-  delete: (id) => del(`/my-feature/${id}`)
-}
+import { useQuery } from '@tanstack/react-query'
+import api from './lib/api'
+import { QueryKeys } from './lib/constants'
 
-// 添加到 default export
-export default {
-  // ...existing
-  myFeature: myFeatureApi
-}
-
-// 2. 在 src/lib/constants.js 中添加 Query Key
-export const QueryKeys = {
-  // ...existing
-  myFeature: (filters) => ['myFeature', filters],
-  myFeatureItem: (id) => ['myFeature', id]
-}
-
-// 3. 在 src/mocks/handlers.js 中添加 Mock
-http.get(`${API_BASE}/my-feature`, () => {
-  return success([/* mock data */])
+// In your component
+const { data, isLoading, error } = useQuery({
+  queryKey: QueryKeys.tasks(),
+  queryFn: () => api.tasks.list()
 })
 ```
 
-### 添加表单验证
+### 3. Form Validation with Zod
 
 ```javascript
-// 1. 在 src/lib/schemas.js 中添加 schema
-import { z } from 'zod'
-
-export const myFormSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  amount: z.number().min(0, 'Amount must be positive'),
-  date: z.string().refine(val => new Date(val) > new Date(), {
-    message: 'Date must be in the future'
-  })
-})
-
-// 2. 在组件中使用
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { myFormSchema } from '@/lib/schemas'
+import { taskSchema } from './lib/schemas'
 
-const {
-  register,
-  handleSubmit,
-  formState: { errors }
-} = useForm({
-  resolver: zodResolver(myFormSchema)
+const { register, handleSubmit, formState: { errors } } = useForm({
+  resolver: zodResolver(taskSchema)
 })
 ```
 
----
+### 4. Mock API with MSW
 
-## 🎨 UI 组件使用速查
+All API calls are intercepted by MSW in development:
 
 ```javascript
-import {
-  LoadingSpinner,
-  ErrorAlert,
-  EmptyState,
-  StatusBadge,
-  ConfirmDialog,
-  Skeleton,
-  Toast
-} from '@/components/ui'
+// src/mocks/handlers.js
+export const handlers = [
+  http.get('/api/tasks', () => {
+    return HttpResponse.json({
+      success: true,
+      data: mockTasks
+    })
+  }),
+  // More handlers...
+]
+```
 
-// 加载
-<LoadingSpinner size="md" text="Loading..." />
+### 5. Styling with Tailwind CSS
 
-// 错误
-<ErrorAlert message="Something went wrong" onRetry={refetch} />
-
-// 空状态
-<EmptyState 
-  icon={FileText}
-  title="No data"
-  description="..."
-  action={{ label: 'Add', to: '/new' }}
-/>
-
-// 状态徽章
-<StatusBadge status={TaskStatus.OPEN} />
-
-// 骨架屏
-<Skeleton variant="card" count={3} />
-
-// Toast
-import toast from '@/lib/toast'
-toast.success('Saved!')
-toast.error('Failed')
+```javascript
+<div className="card bg-base-100 shadow-xl">
+  <div className="card-body">
+    <h2 className="card-title">Task Title</h2>
+    <p>Task description...</p>
+    <button className="btn btn-primary">Apply</button>
+  </div>
+</div>
 ```
 
 ---
 
-## 🔧 开发工具
+## 🔌 API Usage
 
-### VS Code 扩展推荐：
-- ES7+ React/Redux/React-Native snippets
-- Tailwind CSS IntelliSense
-- ESLint
-- Prettier
-- Error Lens
+### API Client Structure
 
-### 浏览器扩展：
-- React Developer Tools
-- TanStack Query Devtools（内置）
-
----
-
-## ⚡ 性能提示
-
-### DO ✅
 ```javascript
-// 使用常量
-import { TaskStatus } from '@/lib/constants'
-if (task.status === TaskStatus.OPEN) {}
-
-// 使用工具函数
-import { formatTimecoin } from '@/lib/utils'
-<span>{formatTimecoin(amount)}</span>
-
-// 使用 Query Keys
-queryClient.invalidateQueries({ queryKey: QueryKeys.tasks() })
+// src/lib/api/client.js
+export async function request(endpoint, options = {}) {
+  const url = `${API_BASE_URL}${endpoint}`
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    }
+  })
+  return response.json()
+}
 ```
 
-### DON'T ❌
+### API Endpoints
+
 ```javascript
-// 硬编码字符串
-if (task.status === 'open') {}
-
-// 内联格式化
-<span>{amount.toFixed(2)} TC</span>
-
-// 字符串 query key
-queryClient.invalidateQueries({ queryKey: ['tasks'] })
+// src/lib/api/index.js
+const api = {
+  tasks: {
+    list: (params) => get('/tasks', params),
+    get: (id) => get(`/tasks/${id}`),
+    create: (data) => post('/tasks', data),
+    update: (id, data) => put(`/tasks/${id}`, data),
+  },
+  proposals: {
+    submit: (data) => post('/proposals', data),
+    list: (params) => get('/proposals', params),
+  },
+  // More endpoints...
+}
 ```
 
----
+### Using APIs in Components
 
-## 🆘 故障排除
-
-### 问题：页面显示 "Loading..." 永远不结束
-
-**解决**：
-1. 打开浏览器控制台查看网络请求
-2. 确认 MSW 是否启动（应该看到 `[MSW] Mocking enabled.`）
-3. 检查 Query Key 是否正确
-
-### 问题：表单验证不工作
-
-**解决**：
-1. 确认使用了 `zodResolver(schema)`
-2. 检查 schema 定义是否正确
-3. 查看 `errors` 对象内容
-
-### 问题：Mutation 不更新 UI
-
-**解决**：
 ```javascript
-onSuccess: () => {
-  // 确保失效相关查询
-  queryClient.invalidateQueries({ queryKey: QueryKeys.tasks() })
+import api from '../lib/api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+function TaskCreate() {
+  const queryClient = useQueryClient()
+  
+  const createMutation = useMutation({
+    mutationFn: api.tasks.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QueryKeys.tasks() })
+      toast.success('Task created successfully')
+    }
+  })
+  
+  const handleSubmit = (data) => {
+    createMutation.mutate(data)
+  }
 }
 ```
 
 ---
 
-## 📞 联系方式
+## 📝 Common Tasks
 
-有问题？
-- 查看文档：`*.md` 文件
-- 检查代码示例：`USAGE_EXAMPLES.md`
-- 查看 Mock 数据：`src/mocks/data.js`
+### Creating a New Page
+
+1. Create the page component in `src/pages/`
+2. Add the route in `src/App.jsx`
+3. Add navigation link in `src/components/Layout.jsx`
+
+```javascript
+// 1. src/pages/MyPage.jsx
+export default function MyPage() {
+  return <div>My Page Content</div>
+}
+
+// 2. src/App.jsx
+import MyPage from './pages/MyPage'
+<Route path="/my-page" element={<Layout><MyPage /></Layout>} />
+
+// 3. src/components/Layout.jsx
+const navigation = [
+  // ...
+  { name: 'My Page', href: '/my-page', icon: Icon }
+]
+```
+
+### Adding a New API Endpoint
+
+```javascript
+// src/lib/api/index.js
+const api = {
+  // Existing endpoints...
+  myResource: {
+    list: (params) => get('/my-resource', params),
+    get: (id) => get(`/my-resource/${id}`),
+    create: (data) => post('/my-resource', data),
+  }
+}
+
+// src/mocks/handlers.js
+http.get('/api/my-resource', () => {
+  return HttpResponse.json({
+    success: true,
+    data: mockData
+  })
+})
+```
+
+### Creating a Reusable Component
+
+```javascript
+// src/components/MyComponent.jsx
+export default function MyComponent({ title, description, onAction }) {
+  return (
+    <div className="card">
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <button onClick={onAction} className="btn-primary">
+        Action
+      </button>
+    </div>
+  )
+}
+
+// Usage in pages
+import MyComponent from '../components/MyComponent'
+
+<MyComponent 
+  title="Hello"
+  description="World"
+  onAction={() => console.log('Clicked')}
+/>
+```
+
+### Adding Form Validation
+
+```javascript
+// 1. Define Zod schema in src/lib/schemas.js
+export const myFormSchema = z.object({
+  name: z.string().min(3, 'Name must be at least 3 characters'),
+  email: z.string().email('Invalid email address'),
+  age: z.number().min(18, 'Must be at least 18 years old')
+})
+
+// 2. Use in component
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { myFormSchema } from './lib/schemas'
+
+const { register, handleSubmit, formState: { errors } } = useForm({
+  resolver: zodResolver(myFormSchema)
+})
+
+const onSubmit = (data) => {
+  // Handle form submission
+}
+
+return (
+  <form onSubmit={handleSubmit(onSubmit)}>
+    <input {...register('name')} />
+    {errors.name && <p>{errors.name.message}</p>}
+    
+    <input {...register('email')} />
+    {errors.email && <p>{errors.email.message}</p>}
+    
+    <input {...register('age', { valueAsNumber: true })} />
+    {errors.age && <p>{errors.age.message}</p>}
+    
+    <button type="submit">Submit</button>
+  </form>
+)
+```
 
 ---
 
-**Happy Coding! 🎉**
+## 🐛 Troubleshooting
 
+### Port Already in Use
+
+If port 3001 is already in use:
+
+```bash
+# Kill process on port 3001
+npx kill-port 3001
+
+# Or change port in vite.config.js
+export default defineConfig({
+  server: {
+    port: 3002
+  }
+})
+```
+
+### Mock Service Worker Not Working
+
+```bash
+# Reinstall MSW
+npm install msw --save-dev
+
+# Copy service worker to public directory
+npx msw init public/ --save
+```
+
+### Styling Not Applied
+
+Make sure Tailwind is configured correctly:
+
+```bash
+# Rebuild Tailwind
+npm run dev
+```
+
+Check `tailwind.config.js`:
+
+```javascript
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  // ...
+}
+```
+
+### Build Errors
+
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Clear Vite cache
+rm -rf .vite
+npm run dev
+```
+
+---
+
+## 📚 Next Steps
+
+- Read [USAGE_EXAMPLES.md](./USAGE_EXAMPLES.md) for detailed code examples
+- Check [FINAL_DELIVERY.md](./FINAL_DELIVERY.md) for completed features
+- Explore [TC_PRICING_GUIDE.md](./TC_PRICING_GUIDE.md) for pricing system details
+
+---
+
+## 🤝 Need Help?
+
+- Check the [documentation](./README.md)
+- Open an issue on GitHub
+- Contact the development team
+
+---
+
+**Happy coding! 🚀**

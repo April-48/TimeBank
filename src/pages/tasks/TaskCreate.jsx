@@ -52,7 +52,7 @@ const TaskCreate = () => {
 
   const formData = watch()
 
-  // 计算推荐价格
+  // Calculate price recommendation
   const calculateRecommendation = () => {
     if (!formData.category || !formData.skills || formData.skills.length === 0) {
       setRecommendation(null)
@@ -62,16 +62,16 @@ const TaskCreate = () => {
     const input = {
       category: formData.category,
       skills: formData.skills,
-      complexity: 'medium', // 默认中等复杂度
-      urgency: 'normal',    // 默认普通紧急度
-      sampleCount: 0        // 占位数据
+      complexity: 'medium', // Default medium complexity
+      urgency: 'normal',    // Default normal urgency
+      sampleCount: 0        // Placeholder data
     }
 
     const rec = mockRecommend(input)
     setRecommendation(rec)
   }
 
-  // 监听表单变化，重新计算推荐价格
+  // Listen to form changes, recalculate recommendation
   React.useEffect(() => {
     calculateRecommendation()
   }, [formData.category, formData.skills])
@@ -120,7 +120,7 @@ const TaskCreate = () => {
   }
 
   const onSubmit = (data) => {
-    // 价格验证
+    // Price validation
     if (recommendation && features.floorValidation) {
       const validationMessage = getPricingValidationMessage(parseInt(data.budget), recommendation)
       if (validationMessage) {
@@ -138,7 +138,7 @@ const TaskCreate = () => {
   }
 
   const handleNudgeRecommendation = (patch) => {
-    // 重新计算推荐价格（这里可以调用后端API）
+    // Recalculate recommendation (can call backend API here)
     calculateRecommendation()
   }
 

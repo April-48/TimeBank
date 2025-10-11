@@ -1,43 +1,42 @@
-# 💰 TimeBank TC 定价指南（无议价｜固定定价）
+# 💰 TimeBank TC Pricing Guide (No Negotiation | Fixed Pricing)
 
-## 🎯 核心原则
+## 🎯 Core Principles
 
-### **无议价** ✅
-- 发布时给出固定金额，接单者仅"接受/不接受"
-- 避免价格争议和时间浪费
+### **No Negotiation** ✅
+- Fixed price at publication, providers can only "accept/decline"
+- Avoids price disputes and time waste
 
-### **价格透明** ✅
-- TC 金额公开，无隐藏费用
+### **Price Transparency** ✅
+- TC amounts are public, no hidden fees
 
-### **无平台佣金** ✅
-- 平台不收取佣金（可能存在通道/网络手续费，按实际产生收取或由发布者承担）
+### **No Platform Commission** ✅
+- Platform doesn't charge commission (payment gateway/network fees may apply, charged as incurred or paid by requester)
 
 ---
 
-## 📊 定价方式（对外只保留 1 种）
+## 📊 Pricing Method (Only 1 Type Available)
 
-### **固定定价（推荐）** ✅
-- 一次性金额，托管 → 交付 → 放款
-- *说明：里程碑定价暂不提供*
+### **Fixed Pricing (Recommended)** ✅
+- Single payment amount: Escrow → Delivery → Release
+- *Note: Milestone-based pricing not available*
 
-## 💡 推荐价格（发布页自动给出）
+## 💡 Recommended Price (Automatically Provided on Publish Page)
 
-- 展示 **推荐区间（P25–P75）** 与 **建议价（P50/中位数）**，并标注 **置信度（低/中/高）**
-- 价格由系统根据任务类型、技能、复杂度和历史数据计算。发布者可"一键采用"
+- Displays **recommended range (P25–P75)** and **suggested price (P50/median)**, labeled with **confidence level (Low/Mid/High)**
+- Price calculated by system based on task type, skills, complexity, and historical data. Requester can "apply with one click"
 
-## 🛡️ 价格护栏（floor）
+## 🛡️ Price Floor
 
-- 每类任务有 **最低发布价**。低于 floor 将不可发布；低于同类任务 P25 会提示"预计接受率较低"
+- Each task category has a **minimum publish price**. Below floor price cannot be published; below P25 will show "expected low acceptance rate" warning
 
-## 🎯 最佳实践
+## 🎯 Best Practices
 
-- **简单任务**：20–50 TC
-- **标准任务**：50–150 TC  
-- **复杂任务**：150–500 TC
-- **紧急任务**可适度溢价（例如 ×1.2）
+- **Simple Tasks**: 20–50 TC
+- **Standard Tasks**: 50–150 TC  
+- **Complex Tasks**: 150–500 TC
+- **Urgent Tasks** may have premium pricing (e.g., ×1.2)
 
-## ❓ FAQ：推荐价可信度
+## ❓ FAQ: Recommendation Confidence
 
-- 样本少时采用"价目表先验 + 小样本收缩"，输出更保守并标"低置信度"
-- 数据积累后自动贴近市场
-
+- With limited samples, uses "price table prior + small sample shrinkage", outputs more conservative and labeled "Low Confidence"
+- As data accumulates, automatically adjusts closer to market rates

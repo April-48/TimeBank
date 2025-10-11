@@ -11,13 +11,13 @@ import { formatTimecoin } from '../../lib/utils'
 import toast from '../../lib/toast'
 
 /**
- * PricingCard Component - 推荐价格卡
+ * PricingCard Component - Price Recommendation Card
  * @param {Object} props
- * @param {number} props.value - 当前价格
- * @param {Object|null} props.recommendation - 推荐数据
- * @param {function} props.onApply - 应用推荐价格回调
- * @param {function} props.onNudge - 微调回调
- * @param {boolean} props.disabled - 是否禁用
+ * @param {number} props.value - Current price
+ * @param {Object|null} props.recommendation - Recommendation data
+ * @param {function} props.onApply - Apply recommendation callback
+ * @param {function} props.onNudge - Nudge recommendation callback
+ * @param {boolean} props.disabled - Whether the card is disabled
  */
 export default function PricingCard({ 
   value, 
