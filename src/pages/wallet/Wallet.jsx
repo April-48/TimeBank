@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import { 
   Wallet as WalletIcon,
-  DollarSign,
   TrendingUp,
   TrendingDown,
   Download,
   Plus,
-  ArrowUpRight,
-  ArrowDownLeft,
+  Clock,
   Lock,
   Unlock,
   RefreshCw,
-  Filter,
   Calendar,
   FileText
 } from 'lucide-react'
@@ -51,11 +48,11 @@ const Wallet = () => {
     },
     {
       id: 3,
-      type: 'deposit',
-      amount: 100,
-      balance: 150,
-      description: 'Account top-up',
-      timestamp: '2024-01-18 09:00',
+      type: 'service_exchange',
+      amount: 32,
+      balance: 170,
+      description: 'Time exchange for "UX feedback session"',
+      timestamp: '2024-01-18 12:00',
       status: 'completed'
     },
     {
@@ -99,16 +96,14 @@ const Wallet = () => {
 
   const getTransactionIcon = (type) => {
     switch (type) {
-      case 'deposit':
-        return <ArrowDownLeft className="w-5 h-5 text-green-600" />
       case 'escrow_hold':
         return <Lock className="w-5 h-5 text-yellow-600" />
       case 'release':
         return <Unlock className="w-5 h-5 text-green-600" />
+      case 'service_exchange':
+        return <Clock className="w-5 h-5 text-indigo-600" />
       case 'refund':
         return <RefreshCw className="w-5 h-5 text-blue-600" />
-      case 'withdrawal':
-        return <ArrowUpRight className="w-5 h-5 text-red-600" />
       default:
         return <FileText className="w-5 h-5 text-gray-600" />
     }
@@ -116,16 +111,14 @@ const Wallet = () => {
 
   const getTypeLabel = (type) => {
     switch (type) {
-      case 'deposit':
-        return 'Deposit'
       case 'escrow_hold':
         return 'Escrow Hold'
       case 'release':
         return 'Payment Release'
+      case 'service_exchange':
+        return 'Time Exchange'
       case 'refund':
         return 'Refund'
-      case 'withdrawal':
-        return 'Withdrawal'
       default:
         return type
     }
@@ -198,17 +191,7 @@ const Wallet = () => {
       {/* Quick Actions */}
       <div className="card">
         <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <button className="bg-gradient-to-br from-green-50 to-green-100 border border-green-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-            <Plus className="w-6 h-6 text-green-600 mb-2" />
-            <p className="font-medium text-gray-900">Deposit</p>
-            <p className="text-xs text-gray-600 mt-1">Add funds to wallet</p>
-          </button>
-          <button className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-            <ArrowUpRight className="w-6 h-6 text-blue-600 mb-2" />
-            <p className="font-medium text-gray-900">Withdraw</p>
-            <p className="text-xs text-gray-600 mt-1">Transfer to bank</p>
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button className="bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200 rounded-lg p-4 hover:shadow-md transition-shadow">
             <FileText className="w-6 h-6 text-purple-600 mb-2" />
             <p className="font-medium text-gray-900">Statements</p>
@@ -331,4 +314,3 @@ const Wallet = () => {
 }
 
 export default Wallet
-
