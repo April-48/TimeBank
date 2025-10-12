@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { 
   Home, 
   User, 
@@ -13,10 +14,24 @@ import {
   ChevronDown,
   MessageCircle
 } from 'lucide-react'
+import api from '../lib/api'
+import { QueryKeys } from '../lib/constants'
+import { formatTimecoin } from '../lib/utils'
 
 const Layout = ({ children }) => {
   const location = useLocation()
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const { data: dashboardData, isLoading: isBalanceLoading } = useQuery({
+    queryKey: QueryKeys.dashboard(),
+    queryFn: () => api.dashboard.get(),
+    staleTime: 5 * 60 * 1000
+  })
+  const totalBalance = dashboardData?.stats?.balance?.totalBalance
+  const timeCoinLabel = isBalanceLoading
+    ? 'Loading...'
+    : typeof totalBalance === 'number'
+      ? `${formatTimecoin(totalBalance, false)} Time Coins`
+      : '-- Time Coins'
   
   const navigation = [
     { name: 'Dashboard', href: '/', icon: Home },
@@ -61,7 +76,7 @@ const Layout = ({ children }) => {
               {/* Time Coin Balance */}
               <div className="flex items-center space-x-2 bg-campus-green/10 px-3 py-2 rounded-lg hover-scale animate-pulse-glow">
                 <Clock className="w-4 h-4 text-campus-green animate-pulse" />
-                <span className="text-sm font-medium text-campus-green">15 Time Coins</span>
+                <span className="text-sm font-medium text-campus-green">{timeCoinLabel}</span>
               </div>
 
               {/* Notifications */}
@@ -167,4 +182,3 @@ const Layout = ({ children }) => {
 }
 
 export default Layout
-
