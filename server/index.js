@@ -25,83 +25,68 @@ router.get('/health', async (req, res) => {
   }
 })
 
-/**
- * 1) AUTH EXAMPLE: POST /auth/login
- * Adjust table/column names to match your schema.
- */
-router.post('/auth/login', async (req, res) => {
-  const { email, password } = req.body
-  try {
-    const [rows] = await pool.query(
-      'SELECT user_id, name, email, password_hash FROM users WHERE email = ?',
-      [email]
-    )
-
-    if (rows.length === 0) {
-      return res.status(401).json({ message: 'Invalid credentials' })
-    }
-
-    const user = rows[0]
-
-    // For now, plain compare (for demo). If you have hashes, use bcrypt.
-    if (user.password_hash !== password) {
-      return res.status(401).json({ message: 'Invalid credentials' })
-    }
-
-    // You can shape this however the frontend expects
-    res.json({
-      id: user.user_id,
-      name: user.name,
-      email: user.email,
-    })
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Server error' })
-  }
-})
-
-/**
- * 2) TASKS EXAMPLE
- * GET /tasks  → list tasks (for board)
- * POST /tasks → create a new task
- */
-
-// GET /tasks
 router.get('/tasks', async (req, res) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT t.task_id AS id,
-              t.title,
-              t.description,
-              t.budget,
-              u.name AS ownerName
-       FROM task t
-       JOIN users u ON u.user_id = t.owner_id
-       ORDER BY t.created_at DESC`
-    )
-    res.json(rows)
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Server error' })
-  }
-})
+  const { status, search } = req.query;
 
-// POST /tasks
-router.post('/tasks', async (req, res) => {
-  const { title, description, budget, ownerId } = req.body
-  try {
-    const [result] = await pool.query(
-      `INSERT INTO task (title, description, budget, owner_id)
-       VALUES (?, ?, ?, ?)`,
-      [title, description, budget, ownerId]
-    )
+  let sql = `
+    SELECT
+      t.task_id AS id,
+      t.title,
+      t.description,
+      t.status,
+      t.deadline_at,
+      t.budget_timecoin,
+      u.name AS poster_name,
+      COUNT(DISTINCT p.proposal_id) AS proposal_count,
+      GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') AS required_skills
+    FROM TASK t
+    JOIN USER u
+      ON u.user_id = t.poster_user_id
+    LEFT JOIN TASK_SKILL ts
+      ON ts.task_id = t.task_id
+    LEFT JOIN SKILL s
+      ON s.skill_id = ts.skill_id
+    LEFT JOIN PROPOSAL p
+      ON p.task_id = t.task_id
+  `;
 
-    res.status(201).json({ id: result.insertId })
-  } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: 'Server error' })
+  const params = [];
+  const conditions = [];
+
+  if (status) {
+    conditions.push('t.status = ?');
+    params.push(status);
   }
-})
+
+  if (search) {
+    conditions.push('(t.title LIKE ? OR t.description LIKE ?)');
+    params.push(`%${search}%`, `%${search}%`);
+  }
+
+  if (conditions.length) {
+    sql += ' WHERE ' + conditions.join(' AND ');
+  }
+
+  sql += `
+    GROUP BY
+      t.task_id,
+      t.title,
+      t.description,
+      t.status,
+      t.deadline_at,
+      t.budget_timecoin,
+      u.name
+    ORDER BY t.deadline_at ASC, t.created_at DESC
+  `;
+
+  try {
+    const [rows] = await pool.query(sql, params);
+    res.json(rows);
+  } catch (err) {
+    console.error('GET /tasks error', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
 
 // mount router under /api
 app.use('/api', router)
